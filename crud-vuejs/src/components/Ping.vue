@@ -9,7 +9,7 @@ export default {
   },
   methods: {
     getMensaje () {
-      const path = 'http://localhost:5000/mensaje'
+      const path = 'https://crud-vue-flask-jhon.web.app/mensaje'
       axios.get(path).then((respuesta)=>{
         this.mensaje = respuesta.data
       })

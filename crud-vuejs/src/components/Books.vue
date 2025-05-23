@@ -28,8 +28,14 @@ export default {
   },
   methods: {
     addBook(payload) {
-      const path = 'http://localhost:5000/books'
-      axios.post(path, payload).then(() => {
+      // const path = 'https://crud-vue-flask.onrender.com/books'
+      const path = 'http://127.0.0.1:5000/books'
+      axios.post(path, payload,{
+        headers: {
+          'x-api-key': 'clave_super_secreta_123',
+          'Content-Type': 'application/json'
+        }
+      }).then(() => {
         this.getBooks();
         this.message = 'Book Add!';
         this.showMessage = true;
@@ -40,8 +46,12 @@ export default {
         });
     },
     getBooks() {
-      const path = 'http://localhost:5000/books'
-      axios.get(path).then((res) => {
+      const path = 'http://127.0.0.1:5000/books'
+      axios.get(path,{
+        headers: {
+          'x-api-key': 'clave_super_secreta_123'
+        }
+      }).then((res) => {
         this.books = res.data.books;
       })
         .catch((error) => {
@@ -49,8 +59,13 @@ export default {
         });
     },
     updateBook(payload, bookID) {
-      const path = `http://localhost:5000/books/${bookID}`;
-      axios.put(path, payload).then(() => {
+      const path = `http://127.0.0.1:5000/books/${bookID}`;
+      axios.put(path, payload,{
+        headers: {
+          'x-api-key': 'clave_super_secreta_123',
+          'Content-Type': 'application/json'
+        }
+      }).then(() => {
         this.getBooks();
         this.message = 'Book updated!';
         this.showMessage = true;
@@ -61,8 +76,12 @@ export default {
         });
     },
     removeBook(bookID) {
-      const path = `http://localhost:5000/books/${bookID}`;
-      axios.delete(path).then(() => {
+      const path = `http://127.0.0.1:5000/books/${bookID}`;
+      axios.delete(path,{
+        headers: {
+          'x-api-key': 'clave_super_secreta_123'
+        }
+      }).then(() => {
         this.getBooks();
         this.message = 'Book removed!';
         this.showMessage = true;
@@ -105,7 +124,7 @@ export default {
       this.initForm();
       this.getBooks();
     },
-    handleDeleteBook(book){
+    handleDeleteBook(book) {
       this.removeBook(book.id);
     },
     initForm() {
@@ -164,7 +183,7 @@ export default {
           <thead>
             <tr>
               <th scope="col">Title</th>
-              <th scope="col"> Author</th>
+              <th scope="col">Author</th>
               <th scope="col">Read?</th>
               <th></th>
             </tr>
@@ -189,51 +208,51 @@ export default {
         </table>
       </div>
     </div>
-  </div>
 
 
-  <!-- Formulario para agregar mas libros -->
-  <div ref="addBookModal" class="modal fade" :class="{ show: activeAddBookModal, 'd-block': activeAddBookModal }"
-    tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Add a new book</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="toggleAddBookModal">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form>
-            <div class="mb-3">
-              <label for="addBookTitle" class="form-label">Title:</label>
-              <input type="text" class="form-control" id="addBookTitle" v-model="addBookForm.title"
-                placeholder="Enter title">
-            </div>
-            <div class="mb-3">
-              <label for="addBookAuthor" class="form-label">Author:</label>
-              <input type="text" class="form-control" id="addBookAuthor" v-model="addBookForm.author"
-                placeholder="Enter author">
-            </div>
-            <div class="mb-3 form-check">
-              <input type="checkbox" class="form-check-input" id="addBookRead" v-model="addBookForm.read">
-              <label class="form-check-label" for="addBookRead">Read?</label>
-            </div>
-            <div class="btn-group" role="group">
-              <button type="button" class="btn btn-primary btn-sm" @click="handleAddSubmit">
-                Submit
-              </button>
-              <button type="button" class="btn btn-danger btn-sm" @click="handleAddReset">
-                Reset
-              </button>
-            </div>
-          </form>
+
+    <!-- Formulario para agregar mas libros -->
+    <div ref="addBookModal" class="modal fade" :class="{ show: activeAddBookModal, 'd-block': activeAddBookModal }"
+      tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Add a new book</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="toggleAddBookModal">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="mb-3">
+                <label for="addBookTitle" class="form-label">Title:</label>
+                <input type="text" class="form-control" id="addBookTitle" v-model="addBookForm.title"
+                  placeholder="Enter title">
+              </div>
+              <div class="mb-3">
+                <label for="addBookAuthor" class="form-label">Author:</label>
+                <input type="text" class="form-control" id="addBookAuthor" v-model="addBookForm.author"
+                  placeholder="Enter author">
+              </div>
+              <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="addBookRead" v-model="addBookForm.read">
+                <label class="form-check-label" for="addBookRead">Read?</label>
+              </div>
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-primary btn-sm" @click="handleAddSubmit">
+                  Submit
+                </button>
+                <button type="button" class="btn btn-danger btn-sm" @click="handleAddReset">
+                  Reset
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>
+    <div v-if="activeAddBookModal" class="modal-backdrop fade show"></div>
   </div>
-  <div v-if="activeAddBookModal" class="modal-backdrop fade show"></div>
-
   <!-- Formulario para editar Books -->
   <div ref="editBookModal" class="modal fade" :class="{ show: activeEditBookModal, 'd-block': activeEditBookModal }"
     tabindex="-1" role="dialog">
