@@ -14,7 +14,7 @@ app = Flask(__name__,
             static_folder='./crud-vuejs/dist/assets',
             template_folder='./crud-vuejs/dist')
 
-cors = CORS(app, resources={r"/*": {"origins": ['https://crud-vue-flask-jhon.web.app']}})
+cors = CORS(app, resources={r"/*": {"origins": ['https://crud-vue-flask-jhon.web.app', 'http://localhost:5173']}})
 
 
 API_KEY = "clave_super_secreta_123"  # cámbiala por una más segura
