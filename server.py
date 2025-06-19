@@ -14,7 +14,7 @@ app = Flask(__name__,
             static_folder='./crud-vuejs/dist/assets',
             template_folder='./crud-vuejs/dist')
 
-cors = CORS(app, resources={r"/*": {"origins": ['https://crud-vue-flask-jhon.web.app']}})
+cors = CORS(app, resources={r"/*": {"origins": ["http://localhost:5173","https://crud-vue-flask-jhon.web.app"]}})
 
 
 API_KEY = "clave_super_secreta_123"  # cámbiala por una más segura
@@ -45,42 +45,39 @@ def render_vue(path):
 
 
 # Coneccion a base de datos
-url_db = f'mongodb+srv://{os.getenv("MONGO_USER")}:{os.getenv("MONGO_PASS")}@{os.getenv("MONGO_CLUSTER")}/?retryWrites=true&w=majority&appName=Datos-crud'
-client = MongoClient(url_db)
-db = client['demo']
-collection = db['data']
+# url_db = "mongodb+srv://geanpiere513:<E7uZZF0NQU3KZ2VO>@datos-crud.z08zkco.mongodb.net/?retryWrites=true&w=majority&appName=Datos-crud"
+# client = MongoClient(url_db)
+# db = client['demo']
+# collection = db['data']
 
 
 #Ruta Books
 BOOKS = [
-    # {
-    #     'id': uuid.uuid4().hex,
-    #     'title' : '100 Anos de soledad',
-    #     'author' : 'Gabriel Garcia Marquez',
-    #     'read' : True,
-    # },
-    # {
-    #     'id': uuid.uuid4().hex,
-    #     'title' : 'La ileada',
-    #     'author' : 'Homero',
-    #     'read' : False,
-    # },
-    #     {
-    #     'id': uuid.uuid4().hex,
-    #     'title' : 'La ciudad y los perros',
-    #     'author' : 'Mario Vargas Llosa',
-    #     'read' : True
-    # },
+    {
+        'id': uuid.uuid4().hex,
+        'title' : '100 Anos de soledad',
+        'author' : 'Gabriel Garcia Marquez',
+        'read' : True,
+    },
+    {
+        'id': uuid.uuid4().hex,
+        'title' : 'La ileada',
+        'author' : 'Homero',
+        'read' : False,
+    },
+        {
+        'id': uuid.uuid4().hex,
+        'title' : 'La ciudad y los perros',
+        'author' : 'Mario Vargas Llosa',
+        'read' : True
+    },
 ]
 
 @app.route('/books', methods=['GET', 'POST'])
 def all_books():
     response_object = { 'status': 'success'}
 
-    BOOKS.clear()  # Limpiar la lista para evitar duplicados
-    for doc in collection.find():
-        doc.pop('_id', None)  # Eliminar el campo _id para evitar conflictos
-        BOOKS.append(doc)
+    # BOOKS.clear()  # Limpiar la lista para evitar duplicados
 
     if request.method == 'POST':
         post_data = request.get_json()
@@ -92,10 +89,10 @@ def all_books():
         }
         BOOKS.append(data_book)
         response_object['message'] = 'Book Add!'
-        collection.insert_one({                   # Insertar el nuevo
-            '_id': data_book['id'],  # Usamos el nuevo ID como _id
-            **data_book
-        })
+        # collection.insert_one({                   # Insertar el nuevo
+        #     '_id': data_book['id'],  # Usamos el nuevo ID como _id
+        #     **data_book
+        # })
     else:
         response_object['books'] = BOOKS
 
@@ -118,18 +115,18 @@ def single_books(book_id):
         BOOKS.append(data_book)
         
         # Operaciones en MongoDB
-        collection.delete_one({'_id': book_id})  # Eliminar el viejo
-        collection.insert_one({                   # Insertar el nuevo
-            '_id': data_book['id'],  # Usamos el nuevo ID como _id
-            **data_book
-        })
+        # collection.delete_one({'_id': book_id})  # Eliminar el viejo
+        # collection.insert_one({                   # Insertar el nuevo
+        #     '_id': data_book['id'],  # Usamos el nuevo ID como _id
+        #     **data_book
+        # })
         
         response_object['message'] = 'Book updated!'
 
     elif request.method == 'DELETE':
 
         remove_book(book_id)
-        collection.delete_one({'_id': book_id})
+        # collection.delete_one({'_id': book_id})
         response_object['message'] = 'Book removed!'
     
     return jsonify(response_object)

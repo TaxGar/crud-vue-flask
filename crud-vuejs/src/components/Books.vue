@@ -29,7 +29,7 @@ export default {
   methods: {
     addBook(payload) {
       // const path = 'https://crud-vue-flask.onrender.com/books'
-      const path = 'http://127.0.0.1:5000/books'
+      const path = 'https://crud-vue-flask.onrender.com/books'
       axios.post(path, payload,{
         headers: {
           'x-api-key': 'clave_super_secreta_123',
@@ -46,7 +46,7 @@ export default {
         });
     },
     getBooks() {
-      const path = 'http://127.0.0.1:5000/books'
+      const path = 'https://crud-vue-flask.onrender.com/books'
       axios.get(path,{
         headers: {
           'x-api-key': 'clave_super_secreta_123'
@@ -59,7 +59,7 @@ export default {
         });
     },
     updateBook(payload, bookID) {
-      const path = `http://127.0.0.1:5000/books/${bookID}`;
+      const path = `https://crud-vue-flask.onrender.com/books/${bookID}`;
       axios.put(path, payload,{
         headers: {
           'x-api-key': 'clave_super_secreta_123',
@@ -76,7 +76,7 @@ export default {
         });
     },
     removeBook(bookID) {
-      const path = `http://127.0.0.1:5000/books/${bookID}`;
+      const path = `https://crud-vue-flask.onrender.com/books/${bookID}`;
       axios.delete(path,{
         headers: {
           'x-api-key': 'clave_super_secreta_123'
